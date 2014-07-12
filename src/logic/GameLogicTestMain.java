@@ -2,7 +2,8 @@ package logic;
 
 public class GameLogicTestMain {
 
-	public static void printMatrix(int[][] matrix, int dimension) {
+	public static void printMatrix(int[][] matrix) {
+		int dimension = matrix.length;
 		for (int i = 0; i < dimension; i++) {
 			for (int j = 0; j < dimension; j++) {
 				System.out.print(Integer.toString(matrix[i][j]) + "  ");
@@ -13,6 +14,8 @@ public class GameLogicTestMain {
 
 	public static void main(String[] args) {
 		Game game = new Game();
+		GameController gc = new GameController(game);
+		
 		game.setRandomSlot();
 		game.setRandomSlot();
 		game.setRandomSlot();
@@ -21,23 +24,32 @@ public class GameLogicTestMain {
 		game.setRandomSlot();
 		game.setRandomSlot();
 		System.out.println("the board");
-		printMatrix(game.getMatrix(), game.getDimension());
+		printMatrix(game.getMatrix());
 
 		System.out.println("Right");
-		game.moveRight();
-		printMatrix(game.getMatrix(), game.getDimension());
+		gc.moveRight();
+		printMatrix(game.getMatrix());
 
 		System.out.println("Left");
-		game.moveLeft();
-		printMatrix(game.getMatrix(), game.getDimension());
+		gc.moveLeft();
+		printMatrix(game.getMatrix());
 
 		System.out.println("Up");
-		game.moveUp();
-		printMatrix(game.getMatrix(), game.getDimension());
+		gc.moveUp();
+		printMatrix(game.getMatrix());
 
 		System.out.println("Down");
-		game.moveDown();
-		printMatrix(game.getMatrix(), game.getDimension());
+		gc.moveDown();
+		printMatrix(game.getMatrix());
+
+		System.out.println("Undo");
+		gc.undoGame();
+		printMatrix(game.getMatrix());
+
+		System.out.println("Redo");
+		gc.redoGame();
+		printMatrix(game.getMatrix());
+		
 
 	}
 

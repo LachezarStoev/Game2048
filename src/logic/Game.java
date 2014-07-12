@@ -8,18 +8,26 @@ public class Game {
 	private int[][] matrix;
 
 	public Game() {
-		this.matrix =new int[DIMENSION][DIMENSION];
+		this.matrix = new int[DIMENSION][DIMENSION];
 		matrixSetup();
 	}
 
-	public int getDimension(){
+	public int getDimension() {
 		return DIMENSION;
 	}
 
-	public int[][] getMatrix(){
+	public int[][] getMatrix() {
 		return this.matrix;
 	}
-	
+
+	public void setMatrix(int[][] newMatrix) {
+		for (int i = 0; i < DIMENSION; i++) {
+			for (int j = 0; j < DIMENSION; j++) {
+				this.matrix[i][j] = newMatrix[i][j];
+			}
+		}
+	}
+
 	private void matrixSetup() {
 		for (int i = 0; i < DIMENSION; i++) {
 			for (int j = 0; j < DIMENSION; j++) {
@@ -48,7 +56,7 @@ public class Game {
 	}
 
 	// This is the main logic for updating the matrix after a move.
-	public void moveRight() {
+	public GameResult moveRight() {
 		for (int row = 0; row < DIMENSION; row++) {
 			moveRowRightmost(row);
 
@@ -66,10 +74,14 @@ public class Game {
 				}
 			}
 		}
-		if(this.hasWon()) {
-			System.out.println("You WIN !!!");
+		if(this.findEmptySlots() == 0) {
+			return GameResult.LOSE;
+		}
+		if (this.hasWon()) {
+			return GameResult.WIN;
 		}
 		this.setRandomSlot();
+		return GameResult.CONTINUE;
 	}
 
 	private void moveRowRightmost(int row) {
@@ -96,7 +108,7 @@ public class Game {
 
 	public void moveUp() {
 		this.rotateMatrixRight();
-		this.moveRight();
+		moveRight();
 		this.rotateMatrixRight();
 		this.rotateMatrixRight();
 		this.rotateMatrixRight();
@@ -106,14 +118,14 @@ public class Game {
 		this.rotateMatrixRight();
 		this.rotateMatrixRight();
 		this.rotateMatrixRight();
-		this.moveRight();
+		moveRight();
 		this.rotateMatrixRight();
 	}
 
 	public void moveLeft() {
 		this.rotateMatrixRight();
 		this.rotateMatrixRight();
-		this.moveRight();
+		moveRight();
 		this.rotateMatrixRight();
 		this.rotateMatrixRight();
 	}
@@ -140,13 +152,9 @@ public class Game {
 		}
 		return emptyCount;
 	}
-	
+
 	public void setRandomSlot() {
 		int emptyCount = this.findEmptySlots();
-		if(emptyCount == 0) {
-			System.out.println("You lose :(");
-			return;
-		}
 		Random rand = new Random();
 		int n = rand.nextInt(emptyCount) + 1;
 
@@ -163,7 +171,7 @@ public class Game {
 			}
 		}
 	}
-	
+
 	private boolean hasWon() {
 		for (int i = 0; i < DIMENSION; i++) {
 			for (int j = 0; j < DIMENSION; j++) {
