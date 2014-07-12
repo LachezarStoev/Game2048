@@ -66,6 +66,9 @@ public class Game {
 				}
 			}
 		}
+		if(this.hasWon()) {
+			System.out.println("You WIN !!!");
+		}
 		this.setRandomSlot();
 	}
 
@@ -126,7 +129,7 @@ public class Game {
 		}
 	}
 
-	public void setRandomSlot() {
+	private int findEmptySlots() {
 		int emptyCount = 0;
 		for (int i = 0; i < DIMENSION; i++) {
 			for (int j = 0; j < DIMENSION; j++) {
@@ -135,10 +138,17 @@ public class Game {
 				}
 			}
 		}
-		// finding a random empty slot and inserting a new number in it
-		int n;
+		return emptyCount;
+	}
+	
+	public void setRandomSlot() {
+		int emptyCount = this.findEmptySlots();
+		if(emptyCount == 0) {
+			System.out.println("You lose :(");
+			return;
+		}
 		Random rand = new Random();
-		n = rand.nextInt(emptyCount) + 1;
+		int n = rand.nextInt(emptyCount) + 1;
 
 		emptyCount = 0;
 		for (int i = 0; i < DIMENSION; i++) {
@@ -152,7 +162,17 @@ public class Game {
 				}
 			}
 		}
-
+	}
+	
+	private boolean hasWon() {
+		for (int i = 0; i < DIMENSION; i++) {
+			for (int j = 0; j < DIMENSION; j++) {
+				if (this.matrix[i][j] == 2048) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

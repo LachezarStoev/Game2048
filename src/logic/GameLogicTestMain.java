@@ -15,6 +15,11 @@ public class GameLogicTestMain {
 		Game game = new Game();
 		game.setRandomSlot();
 		game.setRandomSlot();
+		game.setRandomSlot();
+		game.setRandomSlot();
+		game.setRandomSlot();
+		game.setRandomSlot();
+		game.setRandomSlot();
 		System.out.println("the board");
 		printMatrix(game.getMatrix(), game.getDimension());
 
