@@ -27,8 +27,7 @@ public class ConsoleUI implements Visualization {
 	@Override
 	public void displayBoard() throws IOException {
 
-		boolean isPlaying = true;
-		while (isPlaying) {
+		while (true) {
 			this.printBoard();
 			commandType = TERMINAL.readVirtualKey(System.in);
 			currentState = controller.onCommand(commandType);

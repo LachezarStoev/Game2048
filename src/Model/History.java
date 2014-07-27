@@ -27,12 +27,18 @@ public class History {
 	}
 
 	public int[][] undo() {
+		if (undoStack.empty()) {
+			return null;
+		}
 		int[][] previousState = undoStack.pop();
 		redoStack.push(previousState);
 		return previousState;
 	}
 
 	public int[][] redo() {
+		if (redoStack.empty()) {
+			return null;
+		}
 		int[][] returnedMatrix =  redoStack.pop();
 		undoStack.push(returnedMatrix);
 		return returnedMatrix;

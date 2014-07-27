@@ -9,7 +9,7 @@ public class GameController {
 	public GameController() {
 		this.game = new Game();
 		this.history = new History();
-		state = new GameState(game.getMatrix(), GameStatus.PLAYING);
+		this.state = new GameState(game.getMatrix(), GameStatus.PLAYING);
 	}
 
 	public void moveDown() {
@@ -34,7 +34,6 @@ public class GameController {
 
 	private void onMoved() {
 		game.setRandomSlot();
-		updateGameState();
 		saveOnMovedGame();
 	}
 
@@ -56,27 +55,28 @@ public class GameController {
 
 	public void loadGame() {
 		this.game.setMatrix(this.history.load());
-		updateGameState();
 	}
 
 	public void newGame() {
 		game = new Game();
 		history = new History();
-		updateGameState();
 	}
 	public void undoGame() {
 		int[][] oldState = this.history.undo();
-		this.game.setMatrix(oldState);
-		updateGameState();
+		if (oldState != null) {
+			this.game.setMatrix(oldState);
+		}
 	}
 
 	public void redoGame() {
 		int[][] newState = this.history.redo();
-		this.game.setMatrix(newState);
-		updateGameState();
+		if (newState != null) {
+			this.game.setMatrix(newState);
+		}
 	}
 
 	public GameState getGameState() {
+		updateGameState();
 		return state;
 	}
 
