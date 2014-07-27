@@ -1,15 +1,26 @@
-package logic;
+package Model;
 
 import java.util.Random;
 
 public class Game {
 
-	private final int DIMENSION = 4;
+	public static final int DIMENSION = 4;
 	private int[][] matrix;
 
 	public Game() {
 		this.matrix = new int[DIMENSION][DIMENSION];
 		matrixSetup();
+	}
+
+	private void matrixSetup() {
+		for (int i = 0; i < DIMENSION; i++) {
+			for (int j = 0; j < DIMENSION; j++) {
+				this.matrix[i][j] = 0;
+			}
+		}
+		// Every game starts with 2 numbers.
+		setRandomSlot();
+		setRandomSlot();
 	}
 
 	public int getDimension() {
@@ -26,17 +37,6 @@ public class Game {
 				this.matrix[i][j] = newMatrix[i][j];
 			}
 		}
-	}
-
-	private void matrixSetup() {
-		for (int i = 0; i < DIMENSION; i++) {
-			for (int j = 0; j < DIMENSION; j++) {
-				this.matrix[i][j] = 0;
-			}
-		}
-		// Every game starts with 2 numbers.
-		setRandomSlot();
-		setRandomSlot();
 	}
 
 	public void rotateMatrixRight() {
@@ -56,7 +56,7 @@ public class Game {
 	}
 
 	// This is the main logic for updating the matrix after a move.
-	public GameResult moveRight() {
+	public void moveRight() {
 		for (int row = 0; row < DIMENSION; row++) {
 			moveRowRightmost(row);
 
@@ -74,14 +74,6 @@ public class Game {
 				}
 			}
 		}
-		if(this.findEmptySlots() == 0) {
-			return GameResult.LOSE;
-		}
-		if (this.hasWon()) {
-			return GameResult.WIN;
-		}
-		this.setRandomSlot();
-		return GameResult.CONTINUE;
 	}
 
 	private void moveRowRightmost(int row) {
@@ -155,6 +147,9 @@ public class Game {
 
 	public void setRandomSlot() {
 		int emptyCount = this.findEmptySlots();
+		if (emptyCount == 0) {
+			return;
+		}
 		Random rand = new Random();
 		int n = rand.nextInt(emptyCount) + 1;
 
@@ -172,7 +167,7 @@ public class Game {
 		}
 	}
 
-	private boolean hasWon() {
+	public boolean hasWon() {
 		for (int i = 0; i < DIMENSION; i++) {
 			for (int j = 0; j < DIMENSION; j++) {
 				if (this.matrix[i][j] == 2048) {
@@ -181,6 +176,29 @@ public class Game {
 			}
 		}
 		return false;
+	}
+
+	public boolean hasLost() {
+		if (this.findEmptySlots() > 0) {
+			return false;
+		} else {
+			for (int x = 0; x < DIMENSION; x++) {
+				for (int y = 0; y < DIMENSION - 1; y++) {
+					if (matrix[x][y] == matrix[x][y + 1]) {
+						return false;
+					}
+				}
+			}
+			for (int y = 0; y < DIMENSION; y++) {
+				for (int x = 0; x < DIMENSION - 1; x++) {
+					if (matrix[x][y] == matrix[x + 1][y]) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+
 	}
 
 }
